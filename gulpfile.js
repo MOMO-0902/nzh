@@ -2,6 +2,7 @@ var path = require("path");
 var gulp = require("gulp");
 // var util = require("gulp-util");
 var mocha = require("gulp-mocha");
+var qunit = require('gulp-qunit');
 // var istanbul = require("gulp-istanbul");
 var browserify = require("gulp-browserify");
 var uglify = require("gulp-uglify");
@@ -51,9 +52,17 @@ gulp.task('build',['test'],function(){
 //     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
 // });
 
-gulp.task('test', function () {
-  return gulp.src('test/test_mocha.js', {read: false})
-    .pipe(mocha({reporter: 'dot'}))
-});
+gulp.task('test', ["test_mocha","test_qunit"]);
+
+gulp.task('test_mocha',function(){
+	return gulp.src('test/test_mocha.js', {read: false})
+    .pipe(mocha({reporter: 'dot'}));
+})
+
+gulp.task('test_qunit',function(){
+	return gulp.src('./test/test.html')
+        .pipe(qunit());
+})
+
 
 gulp.task('default', ['build']);
