@@ -320,7 +320,7 @@ var e2ten = exports.e2ten = function (num) {
 		, e = result[5] ? +result[5] : 0;
 	if (e > 0) {
 		var _zs = xs.substr(0, e);
-		_zs = _zs.length < e ? _zs + new Array(e - _zs.length + 1).join("0") : _zs;
+		_zs = _zs.length < e ? _zs + cpstr("0",e - _zs.length) : _zs;
 		xs = xs.substr(e);
 		zs += _zs;
 	} else {
@@ -328,7 +328,7 @@ var e2ten = exports.e2ten = function (num) {
 		var s_start = zs.length - e;
 		s_start = s_start < 0 ? 0 : s_start;
 		var _xs = zs.substr(s_start, e);
-		_xs = _xs.length < e ? new Array(e - _xs.length + 1).join("0") + _xs : _xs;
+		_xs = _xs.length < e ? cpstr("0",e - _xs.length) + _xs : _xs;
 		zs = zs.substring(0, s_start);
 		xs = _xs + xs;
 	}
@@ -338,7 +338,7 @@ var e2ten = exports.e2ten = function (num) {
 
 
 /**
- * 分板数字字符串
+ * 分析数字字符串
  * 
  * @param {string} num NumberString
  * @returns object
@@ -378,8 +378,8 @@ exports.centerArray = function centerArray(baseArray, array1 /*[, array2[, ...[,
 /**
  * 检查对像属性 (非原型链)
  * 
- * @param {any} obj
- * @param {any} key
+ * @param {object} obj
+ * @param {string} key
  * @returns
  */
 var hasAttr = exports.hasAttr = function(obj,key){
@@ -387,10 +387,26 @@ var hasAttr = exports.hasAttr = function(obj,key){
 }
 
 /**
- * 扩展对像(浅复制)
+ * 复制字符串
  * 
- * @param {any} obj
- * @param {any} obj1
+ * @param {string} str 
+ * @param {number} n 
+ * @returns 
+ */
+var cpstr = exports.cpstr = function fn(str,n){
+	if(n <= 0) return "";
+	if(n === 1) return str;
+	var s = fn(str,Math.floor(n/2));
+	s += s;
+	if(n%2) s += str;
+	return s;
+}
+
+/**
+ * 浅复制对像
+ * 
+ * @param {object} obj
+ * @param {object} obj1
  * @returns
  */
 exports.extend = function(obj){
